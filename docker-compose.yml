@@ -1,0 +1,36 @@
+version: '3'
+services:
+  Cloud2020-88738:
+    image: mysql:latest
+    environment: 
+      MYSQL_ROOT_USER: student
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: MKUser
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: Zadanie1
+    container_name: db
+    ports:
+      - 3306:3306
+    networks:
+      Bridge-Zadanie-1:
+        ipv4_address: 10.0.10.3
+    ports:
+      - "3306:3306"
+  java:
+    build:
+      context: ./
+    restart: on-failure
+    container_name: javacontainer
+    depends_on: 
+      - Cloud2020-88738
+    networks:
+      - Bridge-Zadanie-1
+    stdin_open: true
+    tty: true
+networks:
+  Bridge-Zadanie-1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.10.0/24
+
